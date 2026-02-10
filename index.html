@@ -5,185 +5,575 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agentic Coding Fitness — Complete Hands-On Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+/* ================================================================
+   DESIGN SYSTEM: Cybertruck × Optimus × Ferrari × Tron
+   Angular precision. Racing heat. Machine intelligence.
+   ================================================================ */
 :root {
-  --bg:#0a0a0f; --bg2:#111118; --bg3:#161622; --surface:#1a1a28; --surface2:#222233;
-  --border:#2a2a3c; --text:#e4e4f0; --text2:#9a9ab4; --text3:#606078;
-  --accent:#ff3d5a; --blue:#4d8df7; --green:#3dd68c; --orange:#ff8c42; --purple:#a855f7;
-  --cyan:#22d3ee; --yellow:#ffc53d;
-  --phase1:#4d8df7; --phase2:#3dd68c; --phase3:#ff8c42; --phase4:#a855f7;
-  --code-bg:#0d1117; --code-text:#c9d1d9;
-  --sidebar-w:280px;
+  /* Surfaces — deep void to titanium */
+  --bg:#050507; --bg2:#0a0a0d; --bg3:#0e0e12;
+  --surface:#101014; --surface2:#16161c; --surface3:#1c1c24;
+  --border:rgba(255,255,255,.06); --border2:rgba(255,255,255,.1);
+  --border-hot:rgba(255,40,0,.12);
+
+  /* Text — high contrast, easy on eyes */
+  --text:#f0f0f0; --text2:#9ca3af; --text3:#555e6e;
+  --text-dim:rgba(255,255,255,.04);
+
+  /* Ferrari Rosso Corsa + electric variants */
+  --red:#ff2800; --red2:#ff4422; --red-glow:rgba(255,40,0,.08);
+  --red-dim:rgba(255,40,0,.04);
+
+  /* Tron heritage */
+  --cyan:#00e0ff; --cyan-glow:rgba(0,224,255,.06);
+  --cyan-dim:rgba(0,224,255,.03);
+
+  /* Optimus precision palette */
+  --steel:#8892a0; --titanium:#c0c8d4;
+
+  /* Phase colors — vivid but not garish */
+  --phase1:#3b9eff; --phase2:#10d87e; --phase3:#ff8c2e; --phase4:#b06cff;
+  --blue:#3b9eff; --green:#10d87e; --orange:#ff8c2e; --purple:#b06cff;
+  --yellow:#ffc832; --cyan-accent:#00e0ff;
+
+  /* Code */
+  --code-bg:#08080c; --code-text:#b4bcc8;
+
+  /* Layout */
+  --sidebar-w:264px;
+  --content-max:820px;
+
+  /* Type */
+  --mono:'DM Mono', monospace;
+  --sans:'Sora', sans-serif;
+
+  /* Sharp — Cybertruck has zero radius */
+  --radius:0px;
+  --ease:cubic-bezier(.16,1,.3,1);
 }
+
+/* === RESET === */
 *{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;scroll-padding-top:80px;}
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;}
-::selection{background:var(--accent);color:#fff;}
-::-webkit-scrollbar{width:7px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+html{scroll-behavior:smooth;scroll-padding-top:72px;}
 
-/* NAV */
-.topnav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;background:rgba(10,10,15,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;}
-.topnav-logo{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.85rem;color:var(--accent);}
+body{
+  font-family:var(--sans);background:var(--bg);color:var(--text);
+  line-height:1.8;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+}
+
+/* Subtle angular grid — Cybertruck panel lines */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
+  background-size:80px 80px;
+}
+/* Top atmospheric glow — Ferrari red horizon */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 35% at 50% -5%, rgba(255,40,0,.025), transparent 60%),
+    radial-gradient(ellipse 50% 30% at 85% 100%, rgba(0,224,255,.015), transparent 50%);
+}
+
+::selection{background:var(--red);color:#fff;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(255,40,0,.25);border-radius:0;}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,40,0,.5);}
+
+/* === ANIMATIONS === */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes highlightFade{0%{background:rgba(255,40,0,.03);}100%{background:transparent;}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:translateX(0);}}
+
+/* ================================================================
+   NAVIGATION — Cybertruck instrument panel
+   ================================================================ */
+.topnav{
+  position:fixed;top:0;left:0;right:0;z-index:200;height:52px;
+  background:rgba(5,5,7,.92);backdrop-filter:blur(40px) saturate(1.6);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 1.75rem;
+  animation:fadeIn .5s var(--ease);
+}
+.topnav::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 5%,rgba(255,40,0,.15) 30%,rgba(255,40,0,.15) 70%,transparent 95%);
+}
+.topnav-logo{
+  font-family:var(--mono);font-weight:500;font-size:.8rem;
+  letter-spacing:.06em;color:var(--text);
+}
 .topnav-logo span{color:var(--text3);font-weight:400;}
-.topnav-right{margin-left:auto;display:flex;gap:1rem;align-items:center;}
-.topnav-right a{color:var(--text2);text-decoration:none;font-size:.8rem;font-weight:500;}
-.topnav-right a:hover{color:var(--accent);}
-.menu-btn{display:none;background:none;border:none;color:var(--text);font-size:1.3rem;cursor:pointer;padding:0.3rem;}
+.topnav-right{margin-left:auto;display:flex;gap:.4rem;align-items:center;}
+.topnav-right a{
+  color:var(--text3);text-decoration:none;font-size:.75rem;font-weight:500;
+  padding:.35rem .7rem;transition:color .2s;letter-spacing:.03em;
+  text-transform:uppercase;
+}
+.topnav-right a:hover{color:var(--text);}
+.topnav-right a.cta{
+  color:#fff;font-weight:600;
+  background:var(--red);
+  padding:.4rem 1rem;
+  clip-path:polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+  transition:all .2s var(--ease);
+}
+.topnav-right a.cta:hover{background:var(--red2);box-shadow:0 0 20px rgba(255,40,0,.2);}
+.menu-btn{
+  display:none;background:none;border:none;color:var(--text);
+  font-size:1.15rem;cursor:pointer;padding:.35rem;transition:color .2s;
+}
+.menu-btn:hover{color:var(--red);}
 
-/* SIDEBAR */
-.sidebar{position:fixed;top:56px;left:0;bottom:0;width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:1rem 0;transition:transform 0.3s;}
-.sidebar-phase{padding:0.5rem 1.25rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-top:0.75rem;}
+/* ================================================================
+   SIDEBAR — Optimus joint panel
+   ================================================================ */
+.sidebar{
+  position:fixed;top:52px;left:0;bottom:0;width:var(--sidebar-w);
+  background:rgba(5,5,7,.97);border-right:1px solid var(--border);
+  overflow-y:auto;z-index:100;padding:1rem 0;
+  transition:transform .3s var(--ease);animation:fadeIn .6s var(--ease);
+}
+.sidebar::-webkit-scrollbar{width:0;}
+.sidebar-phase{
+  padding:.55rem 1.25rem .3rem;font-family:var(--mono);
+  font-size:.55rem;font-weight:500;text-transform:uppercase;
+  letter-spacing:.2em;margin-top:.6rem;color:var(--text3);
+}
 .sidebar-phase.p1{color:var(--phase1);}
 .sidebar-phase.p2{color:var(--phase2);}
 .sidebar-phase.p3{color:var(--phase3);}
 .sidebar-phase.p4{color:var(--phase4);}
-.sidebar a{display:block;padding:0.35rem 1.25rem;color:var(--text3);text-decoration:none;font-size:.82rem;transition:all 0.15s;border-left:2px solid transparent;}
-.sidebar a:hover{color:var(--text);background:rgba(255,255,255,.02);}
-.sidebar a.active{color:var(--text);border-left-color:var(--accent);background:rgba(255,61,90,.04);}
-.sidebar a .wn{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text3);margin-right:.4rem;}
+.sidebar a{
+  display:flex;align-items:center;padding:.4rem 1.25rem;
+  color:var(--text3);text-decoration:none;font-size:.76rem;font-weight:400;
+  transition:all .15s var(--ease);position:relative;letter-spacing:.01em;
+}
+.sidebar a:hover{color:var(--text2);background:rgba(255,255,255,.015);}
+.sidebar a.active{
+  color:var(--text);background:rgba(255,40,0,.04);font-weight:500;
+}
+.sidebar a.active::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--red);box-shadow:0 0 6px rgba(255,40,0,.4);
+}
+.sidebar a .wn{
+  font-family:var(--mono);font-size:.6rem;color:var(--text3);
+  margin-right:.5rem;min-width:1.6rem;opacity:.35;
+}
+.sidebar a.active .wn{opacity:1;color:var(--red);}
 
-/* MAIN */
-.main{margin-left:var(--sidebar-w);padding:56px 0 0;}
+/* === MAIN LAYOUT === */
+.main{margin-left:var(--sidebar-w);padding:52px 0 0;position:relative;z-index:1;}
 
 @media(max-width:900px){
   .sidebar{transform:translateX(-100%);}
-  .sidebar.open{transform:translateX(0);}
+  .sidebar.open{transform:translateX(0);box-shadow:30px 0 60px rgba(0,0,0,.6);}
   .main{margin-left:0;}
   .menu-btn{display:block;}
 }
 
-/* CONTENT */
-.week-section{padding:3rem 2.5rem 4rem;border-bottom:1px solid var(--border);max-width:960px;}
+/* ================================================================
+   HERO — Ferrari showroom entrance
+   ================================================================ */
+.hero-guide{
+  padding:4.5rem 3rem 3rem;max-width:var(--content-max);
+  position:relative;overflow:hidden;
+}
+.hero-guide::before{
+  content:'';position:absolute;top:-100px;right:-60px;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(255,40,0,.04),transparent 60%);
+  pointer-events:none;
+}
+.hero-guide::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,var(--red),rgba(0,224,255,.2),transparent 70%);
+  opacity:.25;
+}
+.hero-guide h1{
+  font-size:clamp(2.2rem,5vw,3.2rem);font-weight:800;
+  letter-spacing:-.04em;margin-bottom:.4rem;line-height:1.05;
+  animation:fadeUp .5s var(--ease) both;
+}
+.hero-guide h1 span{
+  background:linear-gradient(135deg,var(--red),var(--red2),var(--orange));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-guide .subtitle{
+  color:var(--text2);font-size:.95rem;font-weight:300;
+  margin-bottom:1.5rem;letter-spacing:.01em;
+  animation:fadeUp .5s var(--ease) .08s both;
+  max-width:560px;line-height:1.7;
+}
+.info-pills{display:flex;gap:.4rem;flex-wrap:wrap;animation:fadeUp .5s var(--ease) .15s both;}
+.pill{
+  padding:.3rem .7rem;font-size:.68rem;font-weight:500;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text3);transition:all .2s var(--ease);letter-spacing:.03em;
+  text-transform:uppercase;
+}
+.pill:hover{border-color:var(--border2);color:var(--text2);}
+
+/* ================================================================
+   PROGRESS BAR — Ferrari tachometer redline
+   ================================================================ */
+.progress-bar{
+  position:fixed;top:52px;left:var(--sidebar-w);right:0;
+  height:2px;z-index:199;background:rgba(255,255,255,.02);
+}
+.progress-bar-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--red),var(--red2));
+  box-shadow:0 0 8px rgba(255,40,0,.3);
+  transition:width .25s var(--ease);
+}
+@media(max-width:900px){.progress-bar{left:0;}}
+
+/* ================================================================
+   WEEK SECTIONS — content containers
+   ================================================================ */
+.week-section{
+  padding:3rem 3rem 3.5rem;max-width:var(--content-max);
+  animation:fadeUp .4s var(--ease) both;position:relative;
+  border-bottom:1px solid var(--border);
+}
 .week-section:target{animation:highlightFade 2s ease-out;}
-@keyframes highlightFade{0%{background:rgba(255,61,90,.04);}100%{background:transparent;}}
 
-.week-header-bar{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;}
-.week-badge{padding:0.3rem 0.8rem;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:#fff;}
-.p1 .week-badge{background:var(--phase1);}
-.p2 .week-badge{background:var(--phase2);}
-.p3 .week-badge{background:var(--phase3);}
-.p4 .week-badge{background:var(--phase4);}
-.week-date{font-size:.85rem;color:var(--text3);}
-.week-title{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:0.25rem;}
-.week-subtitle{color:var(--text2);font-size:1rem;margin-bottom:2rem;font-weight:300;}
+.week-header-bar{display:flex;align-items:center;gap:.65rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.week-badge{
+  padding:.25rem .6rem;font-family:var(--mono);font-size:.65rem;
+  font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+}
+.p1 .week-badge{color:var(--phase1);border:1px solid rgba(59,158,255,.25);background:rgba(59,158,255,.04);}
+.p2 .week-badge{color:var(--phase2);border:1px solid rgba(16,216,126,.25);background:rgba(16,216,126,.04);}
+.p3 .week-badge{color:var(--phase3);border:1px solid rgba(255,140,46,.25);background:rgba(255,140,46,.04);}
+.p4 .week-badge{color:var(--phase4);border:1px solid rgba(176,108,255,.25);background:rgba(176,108,255,.04);}
+.week-date{font-size:.72rem;color:var(--text3);font-family:var(--mono);letter-spacing:.03em;}
 
-/* TIMING */
-.timing{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.5rem;margin-bottom:2.5rem;}
-.timing-block{background:var(--surface);border-radius:8px;padding:0.6rem 0.75rem;border-left:3px solid var(--border);}
-.timing-time{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--text3);}
-.timing-label{font-size:.8rem;font-weight:600;color:var(--text);}
-.timing-block.theory{border-left-color:var(--blue);}
-.timing-block.demo{border-left-color:var(--green);}
-.timing-block.brk{border-left-color:var(--text3);}
-.timing-block.handson{border-left-color:var(--orange);}
-.timing-block.share{border-left-color:var(--purple);}
-.timing-block.warmup{border-left-color:var(--cyan);}
+.week-title{
+  font-size:clamp(1.4rem,2.8vw,1.85rem);font-weight:700;
+  letter-spacing:-.025em;margin-bottom:.15rem;line-height:1.2;color:var(--text);
+}
+.week-subtitle{
+  color:var(--text2);font-size:.88rem;margin-bottom:2rem;
+  font-weight:300;line-height:1.75;max-width:600px;
+}
 
-/* SECTION HEADERS */
-.sh{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin:2rem 0 0.75rem;padding:0.4rem 0;border-bottom:1px solid var(--border);}
-.sh.theory{color:var(--blue);}
-.sh.demo{color:var(--green);}
-.sh.exercise{color:var(--orange);}
-.sh.homework{color:var(--purple);}
-.sh.resources{color:var(--cyan);}
+/* ================================================================
+   TIMING BLOCKS — Cybertruck instrument cluster
+   Top edge color stripe, angular, clean
+   ================================================================ */
+.timing{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));
+  gap:3px;margin-bottom:2.5rem;
+}
+.timing-block{
+  background:var(--surface);padding:.6rem .75rem;
+  position:relative;overflow:hidden;transition:background .2s var(--ease);
+}
+.timing-block::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--text3);
+}
+.timing-block:hover{background:var(--surface2);}
+.timing-time{font-family:var(--mono);font-size:.56rem;color:var(--text3);letter-spacing:.05em;}
+.timing-label{font-size:.74rem;font-weight:500;color:var(--text2);margin-top:.1rem;}
+.timing-block.theory::before{background:var(--blue);}
+.timing-block.demo::before{background:var(--green);}
+.timing-block.brk::before{background:var(--text3);}
+.timing-block.handson::before{background:var(--orange);}
+.timing-block.share::before{background:var(--purple);}
+.timing-block.warmup::before{background:var(--cyan-accent);}
 
-h3{font-size:1.15rem;font-weight:700;margin:1.25rem 0 0.5rem;}
-h4{font-size:0.95rem;font-weight:600;margin:1rem 0 0.35rem;color:var(--text);}
+/* ================================================================
+   SECTION HEADERS — angular underline
+   ================================================================ */
+.sh{
+  font-family:var(--mono);font-size:.6rem;font-weight:500;
+  text-transform:uppercase;letter-spacing:.18em;
+  margin:2.5rem 0 .8rem;padding:.45rem 0 .55rem;
+  position:relative;border:none;
+}
+.sh::after{
+  content:'';position:absolute;bottom:0;left:0;height:1px;width:32px;
+}
+.sh.theory{color:var(--blue);}.sh.theory::after{background:var(--blue);}
+.sh.demo{color:var(--green);}.sh.demo::after{background:var(--green);}
+.sh.exercise{color:var(--orange);}.sh.exercise::after{background:var(--orange);}
+.sh.homework{color:var(--purple);}.sh.homework::after{background:var(--purple);}
+.sh.resources{color:var(--cyan-accent);}.sh.resources::after{background:var(--cyan-accent);}
 
-p,.desc{font-size:.92rem;color:var(--text2);margin-bottom:0.75rem;}
+/* === TYPOGRAPHY === */
+h3{font-size:1.05rem;font-weight:600;margin:1.15rem 0 .45rem;letter-spacing:-.01em;color:var(--text);}
+h4{font-size:.92rem;font-weight:600;margin:.9rem 0 .35rem;color:var(--text);}
+p,.desc{font-size:.88rem;color:var(--text2);margin-bottom:.7rem;line-height:1.8;}
 
-/* CONCEPT CARDS */
-.concepts{display:flex;flex-direction:column;gap:0.75rem;margin:0.75rem 0 1.5rem;}
-.concept{background:var(--surface);border-radius:10px;padding:1rem 1.25rem;border-left:3px solid var(--blue);}
-.concept h4{margin:0 0 0.25rem;color:var(--text);font-size:.95rem;}
-.concept p{margin:0;font-size:.85rem;color:var(--text2);}
+/* ================================================================
+   CONCEPT CARDS — Optimus panel segments
+   Clean edges, subtle top gradient, no left border
+   ================================================================ */
+.concepts{display:flex;flex-direction:column;gap:3px;margin:.7rem 0 1.5rem;}
+.concept{
+  background:var(--surface);padding:1rem 1.2rem;
+  border:1px solid var(--border);position:relative;
+  overflow:hidden;transition:all .2s var(--ease);
+}
+.concept::before{
+  content:'';position:absolute;top:0;left:0;width:60px;height:1px;
+  background:var(--blue);opacity:.5;transition:width .3s var(--ease),opacity .3s;
+}
+.concept:hover{background:var(--surface2);border-color:var(--border2);}
+.concept:hover::before{width:120px;opacity:1;}
+.concept h4{margin:0 0 .2rem;font-size:.88rem;font-weight:600;color:var(--text);}
+.concept p{margin:0;font-size:.82rem;color:var(--text2);line-height:1.75;}
 
-/* CODE BLOCKS */
-pre{background:var(--code-bg);border-radius:10px;padding:1.25rem;margin:0.75rem 0 1.25rem;overflow-x:auto;position:relative;border:1px solid #1e2430;}
-code{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--code-text);line-height:1.65;}
-.code-label{position:absolute;top:0.5rem;right:0.75rem;font-family:'JetBrains Mono',monospace;font-size:.6rem;color:#484f58;text-transform:uppercase;letter-spacing:.08em;}
-.copy-btn{position:absolute;top:0.4rem;right:0.5rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:4px;padding:0.2rem 0.5rem;font-size:.65rem;color:var(--text3);cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .2s;}
-.copy-btn:hover{background:rgba(255,255,255,.1);color:var(--text);}
+/* ================================================================
+   CODE BLOCKS — terminal / dark cockpit
+   ================================================================ */
+pre{
+  background:var(--code-bg);padding:1.15rem 1.25rem;margin:.7rem 0 1.15rem;
+  overflow-x:auto;position:relative;border:1px solid rgba(255,255,255,.04);
+}
+pre::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,rgba(255,40,0,.15),transparent 40%);
+}
+code{font-family:var(--mono);font-size:.77rem;color:var(--code-text);line-height:1.75;}
+.code-label{
+  position:absolute;top:.5rem;right:.75rem;font-family:var(--mono);
+  font-size:.5rem;color:var(--text3);text-transform:uppercase;
+  letter-spacing:.14em;font-weight:500;opacity:.5;
+}
+.copy-btn{
+  position:absolute;top:.4rem;right:.55rem;
+  background:rgba(255,255,255,.03);border:1px solid var(--border);
+  padding:.18rem .45rem;font-size:.6rem;color:var(--text3);
+  cursor:pointer;font-family:var(--mono);transition:all .2s var(--ease);
+}
+.copy-btn:hover{background:rgba(255,255,255,.06);color:var(--text2);border-color:var(--border2);}
 
-/* STEPS */
-.steps{counter-reset:step;margin:0.75rem 0 1.5rem;}
-.step{counter-increment:step;padding:0.75rem 1rem 0.75rem 3.5rem;position:relative;background:var(--surface);border-radius:8px;margin-bottom:0.5rem;font-size:.88rem;color:var(--text2);}
-.step::before{content:counter(step);position:absolute;left:0.75rem;top:0.65rem;width:1.8rem;height:1.8rem;border-radius:6px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;color:var(--text3);}
+/* ================================================================
+   STEPS — numbered, clean, readable
+   ================================================================ */
+.steps{counter-reset:step;margin:.7rem 0 1.5rem;}
+.step{
+  counter-increment:step;padding:.8rem 1rem .8rem 3.2rem;
+  position:relative;background:var(--surface);margin-bottom:3px;
+  font-size:.85rem;color:var(--text2);line-height:1.8;
+  border:1px solid var(--border);transition:background .2s;
+}
+.step:hover{background:var(--surface2);}
+.step::before{
+  content:counter(step);position:absolute;left:.75rem;top:.7rem;
+  width:1.6rem;height:1.6rem;
+  background:transparent;border:1px solid rgba(255,40,0,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:.7rem;font-weight:500;color:var(--red);
+}
 .step strong{color:var(--text);font-weight:600;}
-.step code{background:rgba(255,255,255,.05);padding:0.1rem 0.35rem;border-radius:3px;font-size:.78rem;}
+.step code{
+  background:rgba(255,255,255,.04);padding:.1rem .35rem;
+  font-size:.75rem;color:var(--cyan-accent);border:1px solid rgba(255,255,255,.06);
+}
 
-/* EXPECTED OUTPUT */
-.expected{background:rgba(61,214,140,.05);border:1px solid rgba(61,214,140,.15);border-radius:8px;padding:1rem 1.25rem;margin:0.75rem 0;}
-.expected-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:0.35rem;}
+/* ================================================================
+   EXPECTED OUTPUT
+   ================================================================ */
+.expected{
+  background:rgba(16,216,126,.02);border:1px solid rgba(16,216,126,.1);
+  padding:.9rem 1.15rem;margin:.7rem 0;position:relative;
+}
+.expected::before{
+  content:'';position:absolute;top:0;left:0;width:40px;height:1px;
+  background:var(--green);opacity:.6;
+}
+.expected-label{
+  font-family:var(--mono);font-size:.55rem;font-weight:500;
+  text-transform:uppercase;letter-spacing:.16em;color:var(--green);margin-bottom:.3rem;
+}
 
-/* HOMEWORK */
-.hw{background:rgba(168,85,247,.05);border:1px solid rgba(168,85,247,.15);border-radius:10px;padding:1.25rem;margin:0.75rem 0;}
-.hw-title{font-size:.95rem;font-weight:700;color:var(--purple);margin-bottom:0.5rem;}
+/* ================================================================
+   HOMEWORK
+   ================================================================ */
+.hw{
+  background:rgba(176,108,255,.02);border:1px solid rgba(176,108,255,.1);
+  padding:1.15rem;margin:.7rem 0;position:relative;
+}
+.hw::before{
+  content:'';position:absolute;top:0;left:0;width:40px;height:1px;
+  background:var(--purple);opacity:.6;
+}
+.hw-title{font-size:.9rem;font-weight:600;color:var(--purple);margin-bottom:.4rem;}
 .hw ul{list-style:none;margin:0;}
-.hw li{padding:0.25rem 0 0.25rem 1rem;font-size:.85rem;color:var(--text2);position:relative;}
-.hw li::before{content:'→';position:absolute;left:0;color:var(--text3);}
+.hw li{
+  padding:.25rem 0 .25rem 1rem;font-size:.82rem;color:var(--text2);
+  position:relative;line-height:1.8;
+}
+.hw li::before{
+  content:'';position:absolute;left:0;top:.75rem;width:4px;height:1px;
+  background:var(--purple);opacity:.6;
+}
+.hw li code{
+  background:rgba(176,108,255,.05);padding:.1rem .35rem;
+  font-size:.74rem;color:var(--purple);border:1px solid rgba(176,108,255,.1);
+}
 
-/* TAKEAWAY */
-.takeaway{background:rgba(255,61,90,.05);border:1px dashed rgba(255,61,90,.2);border-radius:10px;padding:1.25rem;margin:2rem 0 0;font-size:1rem;font-style:italic;color:var(--text2);}
-.takeaway strong{color:var(--accent);font-style:normal;}
+/* ================================================================
+   TAKEAWAY — Ferrari red wire accent
+   ================================================================ */
+.takeaway{
+  background:var(--red-dim);border:1px solid rgba(255,40,0,.1);
+  padding:1.15rem 1.4rem;margin:2.25rem 0 0;
+  font-size:.9rem;font-style:italic;color:var(--text2);
+  position:relative;line-height:1.8;
+}
+.takeaway::before{
+  content:'';position:absolute;top:0;left:0;width:50px;height:1px;
+  background:var(--red);opacity:.6;
+}
+.takeaway strong{color:var(--red2);font-style:normal;}
 
-/* RESOURCE LINKS */
-.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.5rem;margin:0.5rem 0;}
-.res-link{display:block;padding:0.6rem 0.8rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;text-decoration:none;font-size:.82rem;color:var(--text);transition:all .2s;}
-.res-link:hover{border-color:var(--accent);color:var(--accent);}
-.res-link small{color:var(--text3);display:block;font-size:.72rem;margin-top:0.1rem;}
+/* ================================================================
+   RESOURCE LINKS
+   ================================================================ */
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:3px;margin:.5rem 0;}
+.res-link{
+  display:block;padding:.6rem .85rem;background:var(--surface);
+  border:1px solid var(--border);text-decoration:none;
+  font-size:.78rem;color:var(--text2);transition:all .2s var(--ease);
+}
+.res-link:hover{border-color:var(--border2);color:var(--text);background:var(--surface2);}
+.res-link small{color:var(--text3);display:block;font-size:.64rem;margin-top:.1rem;}
 
-/* TEST / QUIZ */
+/* ================================================================
+   TEST / QUIZ — angular quiz cards
+   ================================================================ */
 .sh.test{color:var(--yellow);}
-.test-intro{font-size:.88rem;color:var(--text2);margin-bottom:1rem;padding:0.75rem 1rem;background:rgba(255,197,61,.05);border:1px solid rgba(255,197,61,.12);border-radius:8px;}
+.sh.test::after{background:var(--yellow);}
+.test-intro{
+  font-size:.84rem;color:var(--text2);margin-bottom:.9rem;
+  padding:.75rem 1rem;background:rgba(255,200,50,.02);
+  border:1px solid rgba(255,200,50,.08);
+}
 .test-intro strong{color:var(--yellow);}
-.quiz{counter-reset:q;margin:0.75rem 0 1.5rem;}
-.q{counter-increment:q;background:var(--surface);border-radius:10px;padding:1.1rem 1.25rem;margin-bottom:0.75rem;border-left:3px solid var(--yellow);position:relative;}
-.q-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:.08em;margin-bottom:0.35rem;}
-.q-text{font-size:.92rem;color:var(--text);margin-bottom:0.5rem;font-weight:500;}
-.q-text code{background:rgba(255,255,255,.06);padding:0.1rem 0.35rem;border-radius:3px;font-size:.8rem;}
-.q-options{list-style:none;margin:0.35rem 0 0;}
-.q-options li{padding:0.3rem 0 0.3rem 1.6rem;font-size:.85rem;color:var(--text2);position:relative;cursor:pointer;border-radius:4px;transition:background .15s;}
-.q-options li::before{content:attr(data-letter);position:absolute;left:0;width:1.2rem;height:1.2rem;border-radius:4px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--text3);top:0.35rem;}
-.q-options li:hover{background:rgba(255,255,255,.02);}
+.quiz{counter-reset:q;margin:.7rem 0 1.5rem;}
+.q{
+  counter-increment:q;background:var(--surface);padding:1rem 1.15rem;
+  margin-bottom:3px;border:1px solid var(--border);
+  position:relative;overflow:hidden;transition:background .2s;
+}
+.q::before{
+  content:'';position:absolute;top:0;left:0;width:40px;height:1px;
+  background:var(--yellow);opacity:.4;
+}
+.q:hover{background:var(--surface2);}
+.q-num{
+  font-family:var(--mono);font-size:.58rem;font-weight:500;color:var(--yellow);
+  text-transform:uppercase;letter-spacing:.14em;margin-bottom:.3rem;
+}
+.q-text{font-size:.88rem;color:var(--text);margin-bottom:.45rem;font-weight:500;line-height:1.65;}
+.q-text code{
+  background:rgba(255,255,255,.04);padding:.08rem .3rem;
+  font-size:.76rem;color:var(--cyan-accent);
+}
+.q-options{list-style:none;margin:.3rem 0 0;}
+.q-options li{
+  padding:.28rem 0 .28rem 1.5rem;font-size:.82rem;color:var(--text2);
+  position:relative;cursor:pointer;transition:color .15s;
+}
+.q-options li::before{
+  content:attr(data-letter);position:absolute;left:0;top:.32rem;
+  width:1.05rem;height:1.05rem;
+  background:transparent;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:.62rem;font-weight:500;
+  color:var(--text3);transition:all .15s;
+}
+.q-options li:hover{color:var(--text);}
+.q-options li:hover::before{border-color:var(--border2);color:var(--text2);}
 .q-options li.correct{color:var(--green);font-weight:500;}
-.q-options li.correct::before{background:rgba(61,214,140,.15);color:var(--green);}
-.q-type{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.6rem;padding:0.15rem 0.4rem;border-radius:3px;background:rgba(255,197,61,.1);color:var(--yellow);margin-left:0.5rem;font-weight:600;vertical-align:middle;}
-.q pre{margin:0.5rem 0;font-size:.78rem;}
-.q-answer{display:none;margin-top:0.6rem;padding:0.6rem 0.8rem;background:rgba(61,214,140,.06);border:1px solid rgba(61,214,140,.12);border-radius:6px;font-size:.82rem;color:var(--green);}
+.q-options li.correct::before{
+  color:var(--green);border-color:rgba(16,216,126,.3);
+  background:rgba(16,216,126,.05);
+}
+.q-type{
+  display:inline-block;font-family:var(--mono);font-size:.54rem;
+  padding:.12rem .4rem;background:rgba(255,200,50,.04);
+  color:var(--yellow);margin-left:.4rem;font-weight:500;
+  vertical-align:middle;letter-spacing:.06em;border:1px solid rgba(255,200,50,.08);
+}
+.q pre{margin:.4rem 0;font-size:.74rem;}
+.q-answer{
+  display:none;margin-top:.5rem;padding:.6rem .8rem;
+  background:rgba(16,216,126,.02);border:1px solid rgba(16,216,126,.1);
+  font-size:.78rem;color:var(--green);line-height:1.75;
+}
 .q-answer strong{font-weight:600;}
-.q.revealed .q-answer{display:block;}
-.reveal-btn{display:inline-block;margin-top:0.5rem;padding:0.3rem 0.7rem;background:rgba(255,197,61,.1);border:1px solid rgba(255,197,61,.2);border-radius:5px;color:var(--yellow);font-size:.75rem;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all .2s;}
-.reveal-btn:hover{background:rgba(255,197,61,.18);}
-.test-score{background:rgba(255,197,61,.06);border:1px dashed rgba(255,197,61,.2);border-radius:10px;padding:1.25rem;margin:1rem 0;text-align:center;}
-.test-score h4{color:var(--yellow);font-size:1rem;margin-bottom:0.3rem;}
-.test-score p{font-size:.85rem;color:var(--text2);margin:0;}
+.q.revealed .q-answer{display:block;animation:fadeUp .25s var(--ease);}
+.reveal-btn{
+  display:inline-block;margin-top:.4rem;padding:.25rem .65rem;
+  background:rgba(255,200,50,.03);border:1px solid rgba(255,200,50,.12);
+  color:var(--yellow);font-size:.7rem;font-family:var(--mono);
+  cursor:pointer;transition:all .2s var(--ease);font-weight:500;letter-spacing:.03em;
+}
+.reveal-btn:hover{background:rgba(255,200,50,.06);border-color:rgba(255,200,50,.25);}
+.test-score{
+  background:rgba(255,200,50,.02);border:1px solid rgba(255,200,50,.08);
+  padding:1.25rem;margin:.85rem 0;text-align:center;
+}
+.test-score h4{color:var(--yellow);font-size:.92rem;margin-bottom:.3rem;font-weight:600;}
+.test-score p{font-size:.8rem;color:var(--text2);margin:0;line-height:1.75;}
 
-/* HERO */
-.hero-guide{padding:4rem 2.5rem 3rem;max-width:960px;border-bottom:1px solid var(--border);}
-.hero-guide h1{font-size:clamp(2rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem;}
-.hero-guide h1 span{color:var(--accent);}
-.hero-guide .subtitle{color:var(--text2);font-size:1.1rem;font-weight:300;margin-bottom:1.5rem;}
-.info-pills{display:flex;gap:0.75rem;flex-wrap:wrap;}
-.pill{padding:0.35rem 0.8rem;border-radius:100px;font-size:.78rem;font-weight:500;background:var(--surface);border:1px solid var(--border);color:var(--text2);}
+/* ================================================================
+   FOOTER
+   ================================================================ */
+.main > section:last-child{border-bottom:none;}
+
+/* ================================================================
+   MOBILE OVERLAY
+   ================================================================ */
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.75);z-index:99;backdrop-filter:blur(6px);
+}
+.sidebar.open ~ .sidebar-overlay{display:block;}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media(max-width:900px){
+  .week-section{padding:2rem 1.25rem 2.5rem;}
+  .hero-guide{padding:3rem 1.25rem 2rem;}
+  .timing{grid-template-columns:repeat(auto-fit,minmax(110px,1fr));}
+}
+@media(max-width:480px){
+  .week-title{font-size:1.3rem;}
+  .hero-guide h1{font-size:2rem;}
+  .info-pills{gap:.3rem;}
+  .pill{font-size:.62rem;padding:.25rem .55rem;}
+}
 </style>
 </head>
 <body>
 
 <nav class="topnav">
-  <button class="menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
-  <div class="topnav-logo">agentic.fitness<span>/guide</span></div>
+  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+  <div class="topnav-logo">agentic<span>.fitness</span></div>
   <div class="topnav-right">
-    <a href="https://github.com/JayChatphet/agentic-coding-fitness" target="_blank" style="color:var(--text2);text-decoration:none;font-size:.8rem;font-weight:500;margin-right:1rem;display:flex;align-items:center;gap:0.4rem;">
-      <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-      Contribute
-    </a>
-    <a href="https://luma.com/x1f5coqp" target="_blank" style="color:var(--accent);font-weight:600;">Register →</a>
+    <a href="https://github.com/AltotechTH/agentic-coding-fitness" target="_blank">GitHub</a>
+    <a href="https://luma.com/x1f5coqp" target="_blank" class="cta">Register</a>
   </div>
 </nav>
+<div class="progress-bar"><div class="progress-bar-fill" id="progressFill"></div></div>
 
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-phase p1">Phase 1 — Foundations</div>
@@ -207,17 +597,18 @@ code{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--code-tex
   <a href="#w15"><span class="wn">W15</span> Build Sprint</a>
   <a href="#w16"><span class="wn">W16</span> Demo Day</a>
 </aside>
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
 <main class="main">
 
 <div class="hero-guide">
-  <h1>Agentic Coding <span>Fitness</span></h1>
-  <p class="subtitle">Complete Hands-On Guide — 16 Weeks · All Code · All Exercises · Step by Step</p>
+  <h1>Agentic Coding<br><span>Fitness</span></h1>
+  <p class="subtitle">Complete hands-on guide. 16 weeks. All code. All exercises. Step by step.</p>
   <div class="info-pills">
-    <span class="pill">📍 Rust Tech Bar Ban Tad Thong</span>
-    <span class="pill">🗓 Every Tuesday · 3 hours</span>
-    <span class="pill">🤖 Feb 10 – May 26, 2026</span>
-    <span class="pill">⚡ By AltoTech Global</span>
+    <span class="pill">Rust Tech Bar, Ban Tad Thong</span>
+    <span class="pill">Every Tuesday, 3 hours</span>
+    <span class="pill">Feb 10 - May 26, 2026</span>
+    <span class="pill">By AltoTech Global</span>
   </div>
 </div>
 
@@ -2582,6 +2973,11 @@ audit.log("hvac_optimizer", "tool_call", {"tool": "set_temperature", "value": 24
 </main>
 
 <script>
+// Sidebar toggle
+function toggleSidebar() {
+  document.querySelector('.sidebar').classList.toggle('open');
+}
+
 // Sidebar active state on scroll
 const sections = document.querySelectorAll('.week-section');
 const sidebarLinks = document.querySelectorAll('.sidebar a');
@@ -2603,6 +2999,30 @@ sidebarLinks.forEach(link => {
   link.addEventListener('click', () => {
     document.querySelector('.sidebar').classList.remove('open');
   });
+});
+
+// Progress bar
+const progressFill = document.getElementById('progressFill');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  progressFill.style.width = scrollPercent + '%';
+}, { passive: true });
+
+// Scroll-triggered fade-in for sections
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animationPlayState = 'running';
+      fadeObserver.unobserve(entry.target);
+    }
+  });
+}, { rootMargin: '0px 0px -60px 0px', threshold: 0.05 });
+
+sections.forEach(s => {
+  s.style.animationPlayState = 'paused';
+  fadeObserver.observe(s);
 });
 </script>
 </body>
