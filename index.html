@@ -707,6 +707,64 @@ Provide your professional audit findings with:
 <div class="expected">
   <div class="expected-label">Expected Output</div>
   <p>A spreadsheet with 30+ scored prompt results, and a clear understanding of which prompt patterns work best for different task types. Most people find: few-shot excels at structured tasks, chain-of-thought at reasoning, role-based at nuanced analysis.</p>
+
+  <p style="margin-top: 1.5rem; font-weight: 500;">Example output:</p>
+
+  <div style="overflow-x: auto; margin: 1rem 0;">
+  <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; background: var(--surface); border-radius: 8px; overflow: hidden;">
+    <thead>
+      <tr style="background: var(--accent); color: white;">
+        <th style="padding: 12px 8px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.1);">Task</th>
+        <th style="padding: 12px 8px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.1);">User Prompt (Input)</th>
+        <th style="padding: 12px 8px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.1);">Model Output</th>
+        <th style="padding: 12px 8px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.1);">Pattern</th>
+        <th style="padding: 12px 8px; text-align: left; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.1);">Model</th>
+        <th style="padding: 12px 8px; text-align: center; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.1);">Accuracy</th>
+        <th style="padding: 12px 8px; text-align: center; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.1);">Completeness</th>
+        <th style="padding: 12px 8px; text-align: center; font-weight: 600;">Usefulness</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom: 1px solid var(--border);">
+        <td style="padding: 12px 8px; vertical-align: top; font-weight: 500;">Meeting summary</td>
+        <td style="padding: 12px 8px; vertical-align: top; max-width: 300px;">
+          <div style="font-family: monospace; font-size: 0.85rem; background: var(--code-bg); padding: 8px; border-radius: 4px; overflow-y: auto; max-height: 200px;">
+            "Please summarize this meeting """"""<br>
+            Alice: Good evening, team. Let's kick off this quick sync. Bob, update on the app sprint?<br><br>
+            Bob: Progressing well. Fixed the login bug yesterday; testing phase now complete. Ready for deploy by Friday.<br><br>
+            Carol: Great. I've updated the UI mockups based on feedback. Sharing screen now—any tweaks needed?<br><br>
+            Dave: Looks sharp. The new CTA button aligns with our campaign colors. Can we add a hover effect?<br><br>
+            Carol: Easy fix; I'll implement by tomorrow.<br><br>
+            Alice: Perfect. Action items: Bob deploys Friday, Carol finalizes UI. Dave, promo timeline?<br><br>
+            Dave: Launch email draft ready; scheduling for Saturday post-deploy. Budget on track.<br><br>
+            Alice: Solid. Next sync Thursday. Thanks, everyone—meeting adjourned."""""""
+          </div>
+        </td>
+        <td style="padding: 12px 8px; vertical-align: top; max-width: 350px;">
+          <div style="font-family: monospace; font-size: 0.85rem; background: var(--code-bg); padding: 8px; border-radius: 4px; overflow-y: auto; max-height: 200px;">
+            "Here's a concise summary of the meeting:<br><br>
+            <strong>Meeting Summary</strong><br><br>
+            Bob reported the app sprint is on track. The login bug has been fixed, testing is complete, and the app is ready for deployment by Friday.<br><br>
+            Carol presented updated UI mockups based on feedback. A hover effect will be added to the new CTA button by tomorrow.<br><br>
+            Dave confirmed the new CTA aligns with campaign colors, the launch email draft is ready, and it will be scheduled for Saturday after deployment. Budget remains on track.<br><br>
+            Alice confirmed action items and set the next sync for Thursday.<br><br>
+            <strong>Action Items</strong><br>
+            • Bob: Deploy app on Friday<br>
+            • Carol: Add hover effect and finalize UI by tomorrow<br>
+            • Dave: Schedule launch email for Saturday<br><br>
+            <strong>Next Meeting</strong><br>
+            Thursday"
+          </div>
+        </td>
+        <td style="padding: 12px 8px; vertical-align: top;">Zero Shot</td>
+        <td style="padding: 12px 8px; vertical-align: top;">GPT-5.2</td>
+        <td style="padding: 12px 8px; text-align: center; vertical-align: top; font-weight: 600; color: var(--accent);">4</td>
+        <td style="padding: 12px 8px; text-align: center; vertical-align: top; font-weight: 600; color: var(--accent);">5</td>
+        <td style="padding: 12px 8px; text-align: center; vertical-align: top; font-weight: 600; color: var(--accent);">5</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
 </div>
 
 <div class="hw">
