@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
 <style>
 /* ================================================================
    DESIGN SYSTEM: Cybertruck × Optimus × Ferrari × Tron
@@ -349,7 +350,7 @@ pre::before{
 }
 code{font-family:var(--mono);font-size:.77rem;color:var(--code-text);line-height:1.75;}
 .code-label{
-  position:absolute;top:.5rem;right:.75rem;font-family:var(--mono);
+  position:absolute;top:.5rem;right:3.8rem;font-family:var(--mono);
   font-size:.5rem;color:var(--text3);text-transform:uppercase;
   letter-spacing:.14em;font-weight:500;opacity:.5;
 }
@@ -358,8 +359,31 @@ code{font-family:var(--mono);font-size:.77rem;color:var(--code-text);line-height
   background:rgba(255,255,255,.03);border:1px solid var(--border);
   padding:.18rem .45rem;font-size:.6rem;color:var(--text3);
   cursor:pointer;font-family:var(--mono);transition:all .2s var(--ease);
+  z-index:2;user-select:none;letter-spacing:.04em;
 }
 .copy-btn:hover{background:rgba(255,255,255,.06);color:var(--text2);border-color:var(--border2);}
+.copy-btn:active{transform:scale(.95);}
+.copy-btn.copied{color:var(--green);border-color:rgba(16,216,126,.25);background:rgba(16,216,126,.04);}
+
+/* Prism.js overrides — preserve existing dark theme */
+pre[class*="language-"],code[class*="language-"]{
+  background:none;text-shadow:none;
+}
+pre[class*="language-"]{
+  background:var(--code-bg);padding:1.15rem 1.25rem;margin:.7rem 0 1.15rem;
+  overflow-x:auto;position:relative;border:1px solid rgba(255,255,255,.04);
+}
+code[class*="language-"]{font-family:var(--mono);font-size:.77rem;line-height:1.75;}
+.token.comment,.token.prolog,.token.doctype,.token.cdata{color:#6a737d;}
+.token.punctuation{color:#9ca3af;}
+.token.keyword,.token.tag,.token.boolean,.token.constant{color:#ff7b72;}
+.token.function{color:#d2a8ff;}
+.token.string,.token.char,.token.attr-value{color:#a5d6ff;}
+.token.number{color:#79c0ff;}
+.token.operator{color:#ff7b72;}
+.token.class-name,.token.builtin{color:#ffa657;}
+.token.decorator,.token.annotation{color:#ffa657;}
+.token.triple-quoted-string{color:#a5d6ff;}
 
 /* ================================================================
    STEPS — numbered, clean, readable
@@ -643,12 +667,12 @@ code{font-family:var(--mono);font-size:.77rem;color:var(--code-text);line-height
 <p>Open Claude.ai, ChatGPT, and Gemini side by side. We'll test the same task with different prompting strategies.</p>
 
 <h4>Task: Analyze an energy bill for savings opportunities</h4>
-<pre><code><span class="code-label">ZERO-SHOT</span>
+<pre class="language-none"><code class="language-none"><span class="code-label">ZERO-SHOT</span>
 This building uses 45,000 kWh/month. HVAC is 40%, lighting 25%,
 equipment 35%. Electricity costs 4.5 THB/kWh.
 What are the top 3 energy savings opportunities?</code></pre>
 
-<pre><code><span class="code-label">FEW-SHOT</span>
+<pre class="language-none"><code class="language-none"><span class="code-label">FEW-SHOT</span>
 Example 1:
 Building: Office 500sqm, 30,000 kWh/month, HVAC 45%
 Analysis: Replace split AC with VRF system → save 25% HVAC = 3,375 kWh
@@ -664,7 +688,7 @@ Building: Hotel 2,000sqm, 45,000 kWh/month
 HVAC 40%, Lighting 25%, Equipment 35%
 Electricity: 4.5 THB/kWh</code></pre>
 
-<pre><code><span class="code-label">CHAIN-OF-THOUGHT</span>
+<pre class="language-none"><code class="language-none"><span class="code-label">CHAIN-OF-THOUGHT</span>
 A hotel uses 45,000 kWh/month. HVAC is 40%, lighting 25%,
 equipment 35%. Electricity costs 4.5 THB/kWh.
 
@@ -675,7 +699,7 @@ Think step by step:
 4. Rank by ROI (payback period)
 5. Give specific technology recommendations</code></pre>
 
-<pre><code><span class="code-label">ROLE-BASED</span>
+<pre class="language-none"><code class="language-none"><span class="code-label">ROLE-BASED</span>
 You are a certified energy auditor (CEA) with 15 years of experience
 auditing commercial buildings in Southeast Asia. You specialize in
 tropical climate HVAC optimization.
@@ -754,14 +778,14 @@ Provide your professional audit findings with:
 
 <div class="q"><div class="q-num">Question 4 <span class="q-type">Identify the Pattern</span></div>
 <div class="q-text">Which prompt engineering pattern is being used here?</div>
-<pre><code>"You are a senior building engineer with 20 years of experience
+<pre class="language-none"><code class="language-none">"You are a senior building engineer with 20 years of experience
 in tropical climate HVAC systems. Analyze this energy data..."</code></pre>
 <div class="q-answer"><strong>Answer: Role-based prompting.</strong> Assigning an expert persona gives the model a frame for response depth, terminology, and perspective.</div>
 <button class="reveal-btn" onclick="this.parentElement.classList.toggle('revealed')">Show Answer</button></div>
 
 <div class="q"><div class="q-num">Question 5 <span class="q-type">Identify the Pattern</span></div>
 <div class="q-text">Which prompt pattern is this?</div>
-<pre><code>"A building uses 500kWh/day. If HVAC is 40% and we reduce it by 20%,
+<pre class="language-none"><code class="language-none">"A building uses 500kWh/day. If HVAC is 40% and we reduce it by 20%,
 how much do we save? Think step by step."</code></pre>
 <div class="q-answer"><strong>Answer: Chain-of-thought.</strong> "Think step by step" instructs the model to show its reasoning process, improving accuracy on math and logic problems.</div>
 <button class="reveal-btn" onclick="this.parentElement.classList.toggle('revealed')">Show Answer</button></div>
@@ -816,7 +840,7 @@ how much do we save? Think step by step."</code></pre>
 <div class="sh demo">Live Demo — 25 min</div>
 <h3>Your First Claude API Call</h3>
 
-<pre><code><span class="code-label">PYTHON — basic_call.py</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — basic_call.py</span>
 import anthropic
 
 client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from env
@@ -832,7 +856,7 @@ response = client.messages.create(
 print(response.content[0].text)
 print(f"\nTokens: {response.usage.input_tokens} in, {response.usage.output_tokens} out")</code></pre>
 
-<pre><code><span class="code-label">PYTHON — streaming.py</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — streaming.py</span>
 import anthropic
 
 client = anthropic.Anthropic()
@@ -850,7 +874,7 @@ with client.messages.stream(
         print(text, end="", flush=True)
 print()  # newline at end</code></pre>
 
-<pre><code><span class="code-label">PYTHON — multi_turn.py</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — multi_turn.py</span>
 import anthropic
 
 client = anthropic.Anthropic()
@@ -886,7 +910,7 @@ print(chat("Now show me a decorator with arguments."))</code></pre>
   <div class="step"><strong>Bonus — Model switching:</strong> Type <code>/model haiku</code> to switch to Haiku, <code>/model opus</code> for Opus. Compare speed and quality.</div>
 </div>
 
-<pre><code><span class="code-label">PYTHON — starter: chat_cli.py</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — starter: chat_cli.py</span>
 import anthropic
 import time
 
@@ -993,7 +1017,7 @@ while True:
 
 <div class="q"><div class="q-num">Question 4 <span class="q-type">Code Completion</span></div>
 <div class="q-text">Fill in the missing line to maintain conversation history:</div>
-<pre><code>messages = []
+<pre class="language-python"><code class="language-python">messages = []
 def chat(user_msg):
     messages.append({"role": "user", "content": user_msg})
     response = client.messages.create(
@@ -1019,7 +1043,7 @@ def chat(user_msg):
 
 <div class="q"><div class="q-num">Question 6 <span class="q-type">Debugging</span></div>
 <div class="q-text">This code throws an error. What's wrong and how do you fix it?</div>
-<pre><code>response = client.messages.create(
+<pre class="language-python"><code class="language-python">response = client.messages.create(
     model="claude-sonnet-4-5-20250514",
     messages=[{"role": "user", "content": "Hello"}]
 )</code></pre>
@@ -1069,7 +1093,7 @@ def chat(user_msg):
 </div>
 
 <div class="sh demo">Live Demo — 25 min</div>
-<pre><code><span class="code-label">PYTHON — tool_use_demo.py</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — tool_use_demo.py</span>
 import anthropic
 import json
 
@@ -1197,7 +1221,7 @@ print(ask("If Bangkok is 32°C, what is that in Fahrenheit?"))</code></pre>
 
 <div class="q"><div class="q-num">Question 3 <span class="q-type">Sequence Ordering</span></div>
 <div class="q-text">Put these steps of the tool use flow in correct order:</div>
-<pre><code>A. Claude returns tool_use block
+<pre class="language-none"><code class="language-none">A. Claude returns tool_use block
 B. Your code sends tool_result back to Claude
 C. You define tools with JSON schemas
 D. Claude incorporates result into final answer
@@ -1208,7 +1232,7 @@ F. User asks a question requiring external data</code></pre>
 
 <div class="q"><div class="q-num">Question 4 <span class="q-type">Code Fix</span></div>
 <div class="q-text">This tool result message is malformed. What's missing?</div>
-<pre><code>messages.append({
+<pre class="language-python"><code class="language-python">messages.append({
     "role": "user",
     "content": [{"type": "tool_result", "content": "32°C, Sunny"}]
 })</code></pre>
@@ -1266,7 +1290,7 @@ F. User asks a question requiring external data</code></pre>
 </div>
 
 <div class="sh demo">Live Demo & Exercise Code</div>
-<pre><code><span class="code-label">PYTHON — research_pipeline.py</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — research_pipeline.py</span>
 import anthropic
 import json
 from datetime import datetime
@@ -1427,7 +1451,7 @@ result = pipeline.run("AI-powered building energy optimization in Southeast Asia
 
 <div class="q"><div class="q-num">Question 6 <span class="q-type">Code Completion</span></div>
 <div class="q-text">Complete this branching logic that re-runs synthesis if quality is low:</div>
-<pre><code>self.step4_synthesize()
+<pre class="language-python"><code class="language-python">self.step4_synthesize()
 self.step5_quality_score()
 # Add branching logic here</code></pre>
 <div class="q-answer"><strong>Answer:</strong> <code>if self.state["quality_score"]["overall"] < 7: self.step4_synthesize()  # re-run with more detail; self.step5_quality_score()  # re-score</code>. Add a max_retries counter to prevent infinite loops.</div>
@@ -1471,7 +1495,7 @@ self.step5_quality_score()
 </div>
 
 <div class="sh demo">Live Demo & Exercise Code</div>
-<pre><code><span class="code-label">PYTHON — agent.py — The Core Agent Framework</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — agent.py — The Core Agent Framework</span>
 import anthropic
 import json
 import subprocess
@@ -1713,7 +1737,7 @@ Return code:{result.returncode}"</code></div>
 <div class="steps">
   <div class="step"><strong>Install:</strong> <code>npm install -g @anthropic-ai/claude-code</code> — verify with <code>claude --version</code></div>
   <div class="step"><strong>Create project folder</strong> and a <code>CLAUDE.md</code>:
-<pre><code># Project: Task Manager API
+<pre class="language-none"><code class="language-none"># Project: Task Manager API
 ## Stack: FastAPI, Python 3.11, SQLite, pytest
 ## Conventions: type hints everywhere, docstrings on all public functions
 ## Testing: pytest with 80%+ coverage target
@@ -1815,7 +1839,7 @@ Return code:{result.returncode}"</code></div>
   <div class="step"><strong>Build a custom MCP server</strong> in Python that exposes your team's internal API (or mock one)</div>
 </div>
 
-<pre><code><span class="code-label">PYTHON — custom_mcp_server.py (simplified)</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — custom_mcp_server.py (simplified)</span>
 from mcp.server import Server
 from mcp.types import Tool, TextContent
 import json
@@ -1920,7 +1944,7 @@ async def get_deployment_status():
 </div>
 
 <div class="sh exercise">Hands-On Exercise — 70 min</div>
-<pre><code><span class="code-label">PYTHON — rag_agent.py — Starter Code</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — rag_agent.py — Starter Code</span>
 # pip install llama-index llama-index-llms-anthropic chromadb
 
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
@@ -2026,7 +2050,7 @@ print(f"\nSources: {[n.metadata['file_name'] for n in response.source_nodes]}")<
 </div>
 
 <div class="sh exercise">Hands-On Exercise — 70 min</div>
-<pre><code><span class="code-label">PYTHON — content_crew.py</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — content_crew.py</span>
 # pip install crewai crewai-tools
 
 from crewai import Agent, Task, Crew, Process
@@ -2203,7 +2227,7 @@ print(result)</code></pre>
 </div>
 
 <div class="sh exercise">Hands-On Exercise — 70 min</div>
-<pre><code><span class="code-label">PYTHON — support_graph.py</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — support_graph.py</span>
 # pip install langgraph langchain-anthropic
 
 from typing import TypedDict, Literal
@@ -2388,7 +2412,7 @@ print(f"Response: {result['response'][:500]}")</code></pre>
 </div>
 
 <div class="sh exercise">Hands-On Exercise — 70 min</div>
-<pre><code><span class="code-label">PYTHON — audit_swarm.py</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — audit_swarm.py</span>
 import anthropic
 import asyncio
 import json
@@ -2666,7 +2690,7 @@ report = synthesize_report(results)</code></pre>
   <div class="step"><strong>Deployment script:</strong> Dockerize the system. Add health checks, auto-restart on failure, and a rollback mechanism.</div>
 </div>
 
-<pre><code><span class="code-label">PYTHON — governance.py — Audit Logger</span>
+<pre class="language-python"><code class="language-python"><span class="code-label">PYTHON — governance.py — Audit Logger</span>
 import json
 import time
 from datetime import datetime
@@ -3024,6 +3048,58 @@ sections.forEach(s => {
   s.style.animationPlayState = 'paused';
   fadeObserver.observe(s);
 });
+
+// Copy-to-clipboard for all code blocks
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;opacity:0;left:-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+}
+
+document.querySelectorAll('pre').forEach(pre => {
+  const codeEl = pre.querySelector('code');
+  if (!codeEl) return;
+
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'COPY';
+  btn.setAttribute('aria-label', 'Copy code to clipboard');
+  let resetTimeout;
+
+  btn.addEventListener('click', () => {
+    const clone = codeEl.cloneNode(true);
+    clone.querySelectorAll('.code-label').forEach(label => label.remove());
+    const text = clone.textContent.trim();
+
+    const showCopied = () => {
+      clearTimeout(resetTimeout);
+      btn.textContent = 'COPIED!';
+      btn.classList.add('copied');
+      resetTimeout = setTimeout(() => {
+        btn.textContent = 'COPY';
+        btn.classList.remove('copied');
+      }, 1800);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showCopied).catch(() => {
+        fallbackCopy(text);
+        showCopied();
+      });
+    } else {
+      fallbackCopy(text);
+      showCopied();
+    }
+  });
+
+  pre.appendChild(btn);
+});
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </body>
 </html>
