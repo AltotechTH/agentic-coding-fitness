@@ -40,3 +40,9 @@
 - Each week: warmup → theory → demo → break → hands-on → test → sharing
 - Code examples in Python
 - Quiz questions with reveal/hide answers
+
+## Exercises
+- Python exercise files live in `exercises/` with weekly subdirectories
+- Each week folder corresponds to a curriculum week (week2 = API basics, week3 = tool use, etc.)
+- Exercises require Python 3.10+ and an Anthropic API key (stored in `exercises/.env`, never committed)
+- `exercises/requirements.txt` lists all Python dependencies
