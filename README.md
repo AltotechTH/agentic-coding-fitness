@@ -38,6 +38,10 @@ This is a single `index.html` file. Low barrier, high impact.
 - Test by opening `index.html` in a browser before submitting
 - Keep the single-file architecture for now (we'll refactor when we need to)
 
+## Exercises
+
+Python exercise files for each week are in the [`exercises/`](./exercises/) folder. See [`exercises/README.md`](./exercises/README.md) for setup instructions.
+
 ## Tech Stack
 
 Intentionally simple: one self-contained HTML file with inline CSS and JS. No build tools, no framework, no dependencies. Open and go.
